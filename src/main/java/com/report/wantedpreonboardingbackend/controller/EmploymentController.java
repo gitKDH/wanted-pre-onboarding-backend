@@ -48,5 +48,10 @@ public class EmploymentController {
         List<Map<String, Object>> employments = employmentService.getAllEmployments();
         return new ResponseEntity<>(employments, HttpStatus.OK);
     }
+    @GetMapping("/{employmentId}")
+    public ResponseEntity<Map<String, Object>> getEmploymentDetails(@PathVariable Long employmentId) {
+        Map<String, Object> employmentDetails = employmentService.getEmploymentDetails(employmentId);
+        return new ResponseEntity<>(employmentDetails, HttpStatus.OK);
+    }
 
 }

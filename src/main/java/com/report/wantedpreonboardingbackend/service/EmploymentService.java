@@ -7,7 +7,7 @@ import com.report.wantedpreonboardingbackend.repository.EmploymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +70,30 @@ public class EmploymentService {
                     return response;
                 })
                 .collect(Collectors.toList());
+    }
+    public Map<String, Object> getEmploymentDetails(Long employmentId) {
+        Employment employment = employmentRepository.findById(employmentId).orElse(null);
+        if (employment == null) {
+            return Collections.singletonMap("오류", "채용공고가 없습니다.");
+        }
+
+        List<Long> otherEmploymentIds = employmentRepository.findByCompany(employment.getCompany())
+                .stream()
+                .filter(emp -> !emp.getId().equals(employmentId))
+                .map(Employment::getId)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("id", employment.getId());
+        response.put("companyName", employment.getCompany().getName());
+        response.put("nation", employment.getCompany().getNation());
+        response.put("region", employment.getCompany().getRegion());
+        response.put("position", employment.getPosition());
+        response.put("reward", employment.getReward());
+        response.put("skill", employment.getSkill());
+        response.put("detail", employment.getDetail());
+        response.put("otherEmployment", otherEmploymentIds);
+
+        return response;
     }
 }

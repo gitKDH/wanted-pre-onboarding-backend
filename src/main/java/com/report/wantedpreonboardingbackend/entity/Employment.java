@@ -70,8 +70,6 @@ public class Employment {
         this.company = company;
     }
 
-    // Constructors
-
     public Employment() {
     }
 
