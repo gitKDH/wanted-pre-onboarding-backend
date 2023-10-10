@@ -18,10 +18,23 @@ public class EmploymentService {
 
     public Employment createEmployment(Employment employment) {
         Company company = companyRepository.findById(employment.getCompany().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Company ID not found!"));
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 회사 아이디가 없습니다."));
 
         employment.setCompany(company);
 
         return employmentRepository.save(employment);
     }
+
+    public Employment updateEmployment(Long id, Employment employmentDetails) {
+        Employment employment = employmentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 채용 공고가 없습니다." + id));
+
+        employment.setPosition(employmentDetails.getPosition());
+        employment.setReward(employmentDetails.getReward());
+        employment.setDetail(employmentDetails.getDetail());
+        employment.setSkill(employmentDetails.getSkill());
+
+        return employmentRepository.save(employment);
+    }
+
 }
