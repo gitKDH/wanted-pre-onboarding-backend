@@ -1,9 +1,12 @@
 package com.report.wantedpreonboardingbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Employment")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Employment {
 
     @Id
