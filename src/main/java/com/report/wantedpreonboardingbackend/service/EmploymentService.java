@@ -7,6 +7,12 @@ import com.report.wantedpreonboardingbackend.repository.EmploymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 public class EmploymentService {
 
@@ -39,5 +45,22 @@ public class EmploymentService {
 
     public void deleteEmployment(Long id) {
         employmentRepository.deleteById(id);
+    }
+    public List<Map<String, Object>> getAllEmployments() {
+        List<Employment> employments = employmentRepository.findAll();
+
+        return employments.stream()
+                .map(emp -> {
+                    Map<String, Object> response = new LinkedHashMap<>();
+                    response.put("id", emp.getId());
+                    response.put("companyName", emp.getCompany().getName());
+                    response.put("nation", emp.getCompany().getNation());
+                    response.put("region", emp.getCompany().getRegion());
+                    response.put("position", emp.getPosition());
+                    response.put("reward", emp.getReward());
+                    response.put("skill", emp.getSkill());
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
 }

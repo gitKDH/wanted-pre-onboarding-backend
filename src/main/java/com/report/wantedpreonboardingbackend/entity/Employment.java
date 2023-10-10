@@ -22,8 +22,6 @@ public class Employment {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    // Getter and Setter
-
     public Long getId() {
         return id;
     }

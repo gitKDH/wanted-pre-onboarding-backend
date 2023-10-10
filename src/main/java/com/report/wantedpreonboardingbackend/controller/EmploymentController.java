@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -36,6 +37,12 @@ public class EmploymentController {
         response.put("message", "채용공고 " + id + "번" + " 삭제 완료.");
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllEmployments() {
+        List<Map<String, Object>> employments = employmentService.getAllEmployments();
+        return new ResponseEntity<>(employments, HttpStatus.OK);
     }
 
 }
