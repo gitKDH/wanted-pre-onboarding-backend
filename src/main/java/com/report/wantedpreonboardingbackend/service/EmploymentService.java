@@ -48,7 +48,15 @@ public class EmploymentService {
     }
     public List<Map<String, Object>> getAllEmployments() {
         List<Employment> employments = employmentRepository.findAll();
+        return convertToResponseList(employments);
+    }
 
+    public List<Map<String, Object>> searchEmployments(String keyword) {
+        List<Employment> employments = employmentRepository.findByCompanyNameContainingOrCompanyNationContainingOrPositionContainingOrSkillContaining(keyword, keyword, keyword, keyword);
+        return convertToResponseList(employments);
+    }
+
+    private List<Map<String, Object>> convertToResponseList(List<Employment> employments) {
         return employments.stream()
                 .map(emp -> {
                     Map<String, Object> response = new LinkedHashMap<>();
