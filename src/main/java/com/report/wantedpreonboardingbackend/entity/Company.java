@@ -23,6 +23,9 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Employment> employments = new ArrayList<>();
 
+    public Company(long l) {
+    }
+
     public Long getId() {
         return id;
     }
