@@ -18,7 +18,7 @@ public class EmploymentController {
     @Autowired
     private EmploymentService employmentService;
 
-    @PostMapping("/")
+    @PostMapping
     public Employment createEmployment(@RequestBody Employment employment) {
         return employmentService.createEmployment(employment);
     }

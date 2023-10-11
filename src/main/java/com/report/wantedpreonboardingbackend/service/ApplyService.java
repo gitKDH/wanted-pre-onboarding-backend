@@ -1,4 +1,5 @@
 package com.report.wantedpreonboardingbackend.service;
+
 import com.report.wantedpreonboardingbackend.entity.Apply;
 import com.report.wantedpreonboardingbackend.entity.User;
 import com.report.wantedpreonboardingbackend.entity.Employment;
