@@ -13,7 +13,7 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @PostMapping("/companies")
+    @PostMapping("/company")
     public Company createCompany(@RequestBody Company company) {
         return companyService.createCompany(company);
     }

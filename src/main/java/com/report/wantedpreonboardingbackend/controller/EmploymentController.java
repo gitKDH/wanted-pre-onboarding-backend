@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/employments")
+@RequestMapping("/employment")
 public class EmploymentController {
 
     @Autowired
