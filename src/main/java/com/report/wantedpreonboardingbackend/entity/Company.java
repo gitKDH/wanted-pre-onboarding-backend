@@ -49,4 +49,19 @@ public class Company {
         this.nation = nation;
         this.region = region;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public void setId(long l) {
+    }
 }

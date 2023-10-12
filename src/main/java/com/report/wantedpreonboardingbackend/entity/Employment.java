@@ -76,4 +76,7 @@ public class Employment {
         this.skill = skill;
         this.company = company;
     }
+
+    public void setId(long l) {
+    }
 }
