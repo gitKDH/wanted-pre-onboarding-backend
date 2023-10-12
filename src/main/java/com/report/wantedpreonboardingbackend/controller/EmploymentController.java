@@ -1,5 +1,6 @@
 package com.report.wantedpreonboardingbackend.controller;
 
+import com.report.wantedpreonboardingbackend.dto.EmploymentDTO;
 import com.report.wantedpreonboardingbackend.entity.Employment;
 import com.report.wantedpreonboardingbackend.service.EmploymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,17 +18,38 @@ import java.util.Map;
 public class EmploymentController {
 
     @Autowired
-    private EmploymentService employmentService;
+    private final EmploymentService employmentService;
+
+    public EmploymentController(EmploymentService employmentService) {
+        this.employmentService = employmentService;
+    }
 
     @PostMapping
-    public Employment createEmployment(@RequestBody Employment employment) {
-        return employmentService.createEmployment(employment);
+    public EmploymentDTO createEmployment(@RequestBody EmploymentDTO employmentDTO) {
+        return employmentService.createEmployment(employmentDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employment> updateEmployment(@PathVariable Long id, @RequestBody Employment employmentDetails) {
-        Employment employment = employmentService.updateEmployment(id, employmentDetails);
-        return new ResponseEntity<>(employment, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> updateEmployment(@PathVariable Long id, @RequestBody EmploymentDTO employmentDTO) {
+        Employment existingEmployment = employmentService.findEmploymentById(id);
+        if (existingEmployment == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        existingEmployment.setPosition(employmentDTO.getPosition());
+        existingEmployment.setReward(employmentDTO.getReward());
+        existingEmployment.setDetail(employmentDTO.getDetail());
+        existingEmployment.setSkill(employmentDTO.getSkill());
+
+        Map<String, Object> updatedEmployment = employmentService.updateEmployment(existingEmployment);
+
+        Map<String, Object> responseDTO = new LinkedHashMap<>();
+        responseDTO.put("position", updatedEmployment.get("position"));
+        responseDTO.put("reward", updatedEmployment.get("reward"));
+        responseDTO.put("detail", updatedEmployment.get("detail"));
+        responseDTO.put("skill", updatedEmployment.get("skill"));
+
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -48,6 +71,7 @@ public class EmploymentController {
         List<Map<String, Object>> employments = employmentService.getAllEmployments();
         return new ResponseEntity<>(employments, HttpStatus.OK);
     }
+
     @GetMapping("/{employmentId}")
     public ResponseEntity<Map<String, Object>> getEmploymentDetails(@PathVariable Long employmentId) {
         Map<String, Object> employmentDetails = employmentService.getEmploymentDetails(employmentId);

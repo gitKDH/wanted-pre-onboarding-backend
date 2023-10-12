@@ -1,10 +1,10 @@
 package com.report.wantedpreonboardingbackend.service;
 
+import com.report.wantedpreonboardingbackend.dto.EmploymentDTO;
 import com.report.wantedpreonboardingbackend.entity.Company;
 import com.report.wantedpreonboardingbackend.entity.Employment;
 import com.report.wantedpreonboardingbackend.repository.CompanyRepository;
 import com.report.wantedpreonboardingbackend.repository.EmploymentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -16,36 +16,54 @@ import java.util.stream.Collectors;
 @Service
 public class EmploymentService {
 
-    @Autowired
-    private EmploymentRepository employmentRepository;
+    private final EmploymentRepository employmentRepository;
+    private final CompanyRepository companyRepository;
 
-    @Autowired
-    private CompanyRepository companyRepository;
-
-    public Employment createEmployment(Employment employment) {
-        Company company = companyRepository.findById(employment.getCompany().getId())
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 회사 아이디가 없습니다."));
-
-        employment.setCompany(company);
-
-        return employmentRepository.save(employment);
+    public EmploymentService(EmploymentRepository employmentRepository, CompanyRepository companyRepository) {
+        this.employmentRepository = employmentRepository;
+        this.companyRepository = companyRepository;
     }
 
-    public Employment updateEmployment(Long id, Employment employmentDetails) {
-        Employment employment = employmentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 채용 공고가 없습니다." + id));
+    public EmploymentDTO createEmployment(EmploymentDTO employmentDTO) {
+        Company company = companyRepository.findById(employmentDTO.getCompany_id())
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 회사 아이디가 없습니다."));
 
-        employment.setPosition(employmentDetails.getPosition());
-        employment.setReward(employmentDetails.getReward());
-        employment.setDetail(employmentDetails.getDetail());
-        employment.setSkill(employmentDetails.getSkill());
+        Employment employment = new Employment();
+        employment.setCompany(company);
+        employment.setPosition(employmentDTO.getPosition());
+        employment.setReward(employmentDTO.getReward());
+        employment.setDetail(employmentDTO.getDetail());
+        employment.setSkill(employmentDTO.getSkill());
 
-        return employmentRepository.save(employment);
+        Employment savedEmployment = employmentRepository.save(employment);
+
+        return new EmploymentDTO(
+                savedEmployment.getCompany().getId(),
+                savedEmployment.getPosition(),
+                savedEmployment.getReward(),
+                savedEmployment.getDetail(),
+                savedEmployment.getSkill()
+        );
+    }
+
+    public Employment findEmploymentById(Long id) {
+        return employmentRepository.findById(id).orElse(null);
+    }
+
+    public Map<String, Object> updateEmployment(Employment employment) {
+        employmentRepository.save(employment);
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("position", employment.getPosition());
+        response.put("reward", employment.getReward());
+        response.put("skill", employment.getSkill());
+        response.put("detail", employment.getDetail());
+        return response;
     }
 
     public void deleteEmployment(Long id) {
         employmentRepository.deleteById(id);
     }
+
     public List<Map<String, Object>> getAllEmployments() {
         List<Employment> employments = employmentRepository.findAll();
         return convertToResponseList(employments);
@@ -71,6 +89,7 @@ public class EmploymentService {
                 })
                 .collect(Collectors.toList());
     }
+
     public Map<String, Object> getEmploymentDetails(Long employmentId) {
         Employment employment = employmentRepository.findById(employmentId).orElse(null);
         if (employment == null) {
