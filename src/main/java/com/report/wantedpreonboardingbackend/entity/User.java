@@ -1,10 +1,7 @@
 
 package com.report.wantedpreonboardingbackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
@@ -15,13 +12,6 @@ public class User {
 
     private String name;
 
-    public User() {
-    }
-
-    public User(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
@@ -30,16 +20,11 @@ public class User {
         return name;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User() {
     }
 
-    public void setName(String name) {
+    public User(String name) {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", name='" + name + '\'' + '}';
-    }
 }

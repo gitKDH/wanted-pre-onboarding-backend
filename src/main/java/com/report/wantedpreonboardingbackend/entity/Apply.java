@@ -32,28 +32,12 @@ public class Apply {
         this.employment = employment;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Employment getEmployment() {
         return employment;
-    }
-
-    public void setEmployment(Employment employment) {
-        this.employment = employment;
     }
 
     @Override

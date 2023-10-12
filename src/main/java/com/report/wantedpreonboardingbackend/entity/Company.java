@@ -29,32 +29,16 @@ public class Company {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getNation() {
         return nation;
     }
 
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
     public String getRegion() {
         return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     public Company(){
