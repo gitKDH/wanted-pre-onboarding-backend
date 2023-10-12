@@ -3,7 +3,7 @@ package com.report.wantedpreonboardingbackend.dto;
 public class UserDTO {
     private String name;
 
-    public UserDTO(){
+    public UserDTO() {
     }
 
     public UserDTO(String name) {
