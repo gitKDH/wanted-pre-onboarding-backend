@@ -77,6 +77,7 @@ public class Employment {
         this.company = company;
     }
 
-    public void setId(long l) {
+    public void setId(Long id) {
+        this.id = id;
     }
 }

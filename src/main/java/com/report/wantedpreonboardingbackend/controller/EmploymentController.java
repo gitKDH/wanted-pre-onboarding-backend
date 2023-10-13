@@ -25,8 +25,9 @@ public class EmploymentController {
     }
 
     @PostMapping
-    public EmploymentDTO createEmployment(@RequestBody EmploymentDTO employmentDTO) {
-        return employmentService.createEmployment(employmentDTO);
+    public ResponseEntity<EmploymentDTO> createEmployment(@RequestBody EmploymentDTO employmentDTO) {
+        EmploymentDTO returnEmploymentDTO = employmentService.createEmployment(employmentDTO);
+        return new ResponseEntity<> (returnEmploymentDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -41,15 +42,16 @@ public class EmploymentController {
         existingEmployment.setDetail(employmentDTO.getDetail());
         existingEmployment.setSkill(employmentDTO.getSkill());
 
-        Map<String, Object> updatedEmployment = employmentService.updateEmployment(existingEmployment);
+        employmentService.updateEmployment(existingEmployment);
 
-        Map<String, Object> responseDTO = new LinkedHashMap<>();
-        responseDTO.put("position", updatedEmployment.get("position"));
-        responseDTO.put("reward", updatedEmployment.get("reward"));
-        responseDTO.put("detail", updatedEmployment.get("detail"));
-        responseDTO.put("skill", updatedEmployment.get("skill"));
+        // 필요한 필드를 반환하도록 수정
+        Map<String, Object> updatedEmploymentResponse = new LinkedHashMap<>();
+        updatedEmploymentResponse.put("position", existingEmployment.getPosition());
+        updatedEmploymentResponse.put("reward", existingEmployment.getReward());
+        updatedEmploymentResponse.put("detail", existingEmployment.getDetail());
+        updatedEmploymentResponse.put("skill", existingEmployment.getSkill());
 
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(updatedEmploymentResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -63,6 +65,10 @@ public class EmploymentController {
     }
 
     @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> getAllEmployments() {
+        List<Map<String, Object>> employments = employmentService.getAllEmployments();
+        return new ResponseEntity<>(employments, HttpStatus.OK);
+    }
     public ResponseEntity<List<Map<String, Object>>> getAllEmployments(@RequestParam(required = false) String search) {
         if (search != null) {
             List<Map<String, Object>> employments = employmentService.searchEmployments(search);
