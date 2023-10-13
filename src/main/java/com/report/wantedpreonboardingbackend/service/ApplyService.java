@@ -4,6 +4,7 @@ import com.report.wantedpreonboardingbackend.dto.ApplyDTO;
 import com.report.wantedpreonboardingbackend.entity.Apply;
 import com.report.wantedpreonboardingbackend.entity.User;
 import com.report.wantedpreonboardingbackend.entity.Employment;
+import com.report.wantedpreonboardingbackend.exceptions.DuplicateApplicationException;
 import com.report.wantedpreonboardingbackend.repository.ApplyRepository;
 import com.report.wantedpreonboardingbackend.repository.UserRepository;
 import com.report.wantedpreonboardingbackend.repository.EmploymentRepository;
@@ -27,7 +28,7 @@ public class ApplyService {
         Employment employment = employmentRepository.findById(applyDTO.getEmploymentId()).orElseThrow(() -> new RuntimeException("공고를 찾을 수 없습니다."));
 
         if (applyRepository.findByUserAndEmployment(user, employment).isPresent()) {
-            throw new RuntimeException("이미 지원한 공고입니다.");
+            throw new DuplicateApplicationException("이미 지원한 공고입니다.");
         }
 
         Apply apply = new Apply(user, employment);
