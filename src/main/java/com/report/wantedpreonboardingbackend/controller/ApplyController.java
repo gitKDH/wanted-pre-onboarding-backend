@@ -2,6 +2,7 @@ package com.report.wantedpreonboardingbackend.controller;
 
 import com.report.wantedpreonboardingbackend.dto.ApplyDTO;
 import com.report.wantedpreonboardingbackend.entity.Apply;
+import com.report.wantedpreonboardingbackend.exceptions.DuplicateApplicationException;
 import com.report.wantedpreonboardingbackend.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,14 @@ public class ApplyController {
     private ApplyService applyService;
 
     @PostMapping
-    public ResponseEntity<ApplyDTO> applyForJob(@RequestBody ApplyDTO applyDTO) {
-        Apply apply = applyService.applyForJob(applyDTO);
-        ApplyDTO returnApply = new ApplyDTO();
-        returnApply.setUserId(apply.getUser().getId());
-        returnApply.setEmploymentId(apply.getEmployment().getId());
-        return new ResponseEntity<>(returnApply, HttpStatus.CREATED);
+    public ResponseEntity<?> applyForJob(@RequestBody ApplyDTO applyDTO) {
+        try {
+            Apply apply = applyService.applyForJob(applyDTO);
+            ApplyDTO returnApply = new ApplyDTO(apply);
+
+            return new ResponseEntity<>(returnApply, HttpStatus.CREATED);
+        } catch (DuplicateApplicationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
