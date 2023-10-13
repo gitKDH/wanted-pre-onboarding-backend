@@ -65,10 +65,10 @@ public class EmploymentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getAllEmployments() {
-        List<Map<String, Object>> employments = employmentService.getAllEmployments();
-        return new ResponseEntity<>(employments, HttpStatus.OK);
-    }
+//    public ResponseEntity<List<Map<String, Object>>> getAllEmployments() {
+//        List<Map<String, Object>> employments = employmentService.getAllEmployments();
+//        return new ResponseEntity<>(employments, HttpStatus.OK);
+//    }
     public ResponseEntity<List<Map<String, Object>>> getAllEmployments(@RequestParam(required = false) String search) {
         if (search != null) {
             List<Map<String, Object>> employments = employmentService.searchEmployments(search);
