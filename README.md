@@ -568,7 +568,7 @@ public class ApplyForJobUnitTest {
 2. DB 연결 및 확인
 3. Entity, 테이블 생성
 4. entity, dto, controller, service, repository 총 5개의 패키지로 구분
-5. user, company 생성 및 요구 기능 구현
+5. 요구 기능 비즈니스 로직 구현
 6. Postman을 이용한 API 실행
 7. Unit Test 작성 및 수행
 
